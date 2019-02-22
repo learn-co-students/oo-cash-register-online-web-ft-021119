@@ -2,7 +2,7 @@ require 'pry'
 
 class CashRegister
   attr_accessor :discount, :total
-  attr_reader :item, :price, :quantity
+
   # attr_writer :total
   def initialize(discount = 0)
     @total = 0.0
@@ -11,7 +11,7 @@ class CashRegister
   end
 
   def add_item(item, price, quantity = 1)
-    @item, @price, @quantity = item, price, quantity
+    @price, @quantity = price, quantity
     @total += @price * @quantity
     @quantity.times {@cart << item}
   end
@@ -19,7 +19,7 @@ class CashRegister
   def apply_discount
     message = ""
     if @discount > 0
-      @total -= (@discount/100.to_f)*@total
+      @total -= @total * @discount / 100
       message = "After the discount, the total comes to $#{@total.to_i}."
     else
       message = "There is no discount to apply."
@@ -35,4 +35,24 @@ class CashRegister
     @total -= @price * @quantity
     @quantity.times {@cart.pop}
   end
+
+
+  def add_item(item, price, quantity = 0)
+    if quantity > 0
+      @total += price * quantity
+    else
+      @total += price
+    end
+  end
+
+  def apply_discount
+    if @discount > 0
+      @total -= (@discount/100.to_f)*@total
+      message = "After the discount, the total comes to $#{@total.to_i}."
+    else
+      message = "There is no discount to apply."
+    end
+    message
+  end
+
 end #end of Class Cash Register
