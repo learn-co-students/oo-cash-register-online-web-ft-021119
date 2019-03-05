@@ -13,10 +13,11 @@ require 'pry'
                         # In what method of the class are you working with an individual item?
 
 class CashRegister
-  attr_accessor :total, :discount
+  attr_accessor :total, :discount, :items
   def initialize(discount = 0)
     @total = 0
     @discount = discount
+    @items = []
   end
 
   def cash_register_with_discount
@@ -27,9 +28,29 @@ class CashRegister
     @total
   end
 
-  def add_item(title, price)
-    self.total = self.total + (price)
+  def add_item(title, price, quantity = 1)
+    self.total = self.total + (price * quantity)
     self.total
-# binding.pry
+    quantity.times do
+      @items << title
+    end
   end
+
+  def apply_discount
+    if discount != 0
+      self.total = self.total - (self.total * 0.2)
+      "After the discount, the total comes to $#{(self.total).to_i}."
+    else
+      "There is no discount to apply."
+    end
+  end
+
+  def items
+    @items
+  end
+
+  def void_last_transaction
+    self.total = self.total - self.total
+  end
+
 end
